@@ -1,31 +1,44 @@
 package com.logparser;
 
+import com.logparser.builder.HandlerChainBuilder;
+import com.logparser.handler.*;
+import com.logparser.processor.LogProcessor;
+import com.logparser.util.JSONWriter;
+
+import java.util.List;
+import java.util.Map;
+
 public class Main {
     public static void main(String[] args) {
-
-        String inputFilePath = null; // Input file must be specified with --file
-        String apmOutputPath = "output/apm.json";
-        String applicationOutputPath = "output/application.json";
-        String requestOutputPath = "output/request.json";
-
-
-        // Parse command-line arguments
-        // args contains the command line arguments passed to the main function
-        for (int i = 0; i < args.length; i++) {
-            if ("--file".equals(args[i])) {
-                inputFilePath = args[++i];
-            } else {
-                System.err.println("Unknown argument: " + args[i]);
-            }
+        if (args.length < 1) {
+            System.out.println("Usage: java -jar log-parser.jar <logFilePath>");
+            System.exit(1);
         }
 
-        // check if we got a file path
-        if (inputFilePath == null) {
-            System.err.println("Error: Please specify an input file using --file <filename.txt>");
-            return;
-        }
+        String logFilePath = args[0];
+        LogHandler handlerChain = HandlerChainBuilder.buildChain();
 
-        System.out.println(".. Generating Report");
+        // Extract references to individual handlers
+        APMHandler apmHandler = (APMHandler) handlerChain;
+        ApplicationHandler appHandler = (ApplicationHandler) apmHandler.getNext();
+        RequestHandler requestHandler = (RequestHandler) appHandler.getNext();
 
+        LogProcessor processor = new LogProcessor(handlerChain);
+        processor.process(logFilePath);
+
+        JSONWriter jsonWriter = new JSONWriter();
+
+        // Write APM metrics to JSON
+        Map<String, Map<String, Double>> apmReport = apmHandler.generateAPMReport();
+        jsonWriter.writeToJson("output/apm.json", apmReport);
+
+        Map<String, Map<String, Object>> requestSummary = requestHandler.generateRequestReport();
+        jsonWriter.writeToJson("output/request.json", requestSummary);
+
+        Map<String, Integer> appSummary = appHandler.getSeverityCounts();
+        jsonWriter.writeToJson("output/application.json", appSummary);
+
+        System.out.println("All processing complete!");
     }
+
 }

@@ -1,0 +1,62 @@
+{
+  "/api/retry" : {
+    "min_response_time" : 216,
+    "max_response_time" : 454,
+    "percentiles" : {
+      "90th" : 454.0,
+      "50th" : 233.0,
+      "95th" : 454.0,
+      "99th" : 454.0
+    },
+    "average_response_time" : 301.0,
+    "status_counts" : {
+      "2XX" : 1,
+      "4XX" : 1,
+      "5XX" : 1
+    }
+  },
+  "/home" : {
+    "min_response_time" : 329,
+    "max_response_time" : 329,
+    "percentiles" : {
+      "90th" : 329.0,
+      "50th" : 329.0,
+      "95th" : 329.0,
+      "99th" : 329.0
+    },
+    "average_response_time" : 329.0,
+    "status_counts" : {
+      "4XX" : 1
+    }
+  },
+  "/api/status" : {
+    "min_response_time" : 117,
+    "max_response_time" : 277,
+    "percentiles" : {
+      "90th" : 277.0,
+      "50th" : 140.0,
+      "95th" : 277.0,
+      "99th" : 277.0
+    },
+    "average_response_time" : 175.0,
+    "status_counts" : {
+      "2XX" : 2,
+      "5XX" : 3
+    }
+  },
+  "/api/update" : {
+    "min_response_time" : 61,
+    "max_response_time" : 378,
+    "percentiles" : {
+      "90th" : 378.0,
+      "50th" : 144.0,
+      "95th" : 378.0,
+      "99th" : 378.0
+    },
+    "average_response_time" : 194.33333333333334,
+    "status_counts" : {
+      "4XX" : 2,
+      "5XX" : 1
+    }
+  }
+}
