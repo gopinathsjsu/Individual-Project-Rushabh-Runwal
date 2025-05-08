@@ -51,8 +51,8 @@ public class APMHandler extends LogHandler {
             double median = calculateMedian(values);
 
             Map<String, Double> stats = new HashMap<>();
-            stats.put("min", min);
-            stats.put("max", max);
+            stats.put("minimum", min);
+            stats.put("maximum", max);
             stats.put("average", avg);
             stats.put("median", median);
 
